@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libftprintf.h"
+#include "./ft_printf.h"
 
 static size_t	get_digits(unsigned long n)
 {

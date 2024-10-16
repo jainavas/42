@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libftprintf.h"
+#include "./ft_printf.h"
 
 int	print_number2(unsigned int unr, char *base, int fd, int numw)
 {

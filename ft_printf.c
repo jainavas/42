@@ -6,30 +6,30 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:37:44 by jainavas          #+#    #+#             */
-/*   Updated: 2024/09/30 21:20:46 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:17:23 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int	sel_pointer(void *ptr)
+int	sel_pointer(unsigned long x)
 {
 	int		numw;
 	char	*res;
 
-	if (ptr == (void *)-1)
+	if (x == (unsigned long)(void *)-1)
 	{
 		numw = ft_intputstr_fd("0xffffffffffffffff", 1);
 		return (numw);
 	}
-	if (ptr == NULL)
+	if (x == (unsigned long) NULL)
 	{
 		numw = ft_intputstr_fd("(nil)", 1);
 	}
 	else
 	{
 		numw = ft_intputstr_fd("0x", 1);
-		res = ft_convert_base(ft_ultoa((unsigned long)ptr), BASE10, BASE16);
+		res = ft_putnbr_base(x, BASE16);
 		numw += ft_intputstr_fd(res, 1);
 		free(res);
 	}
@@ -60,25 +60,25 @@ int	sel_op2(char x, va_list args, int numw)
 
 int	sel_op(char x, va_list args, int numw)
 {
-	long int		hex;
+	unsigned long	hex;
 	char			*res;
 
 	numw = 0;
 	if (x == '%' || x == 'u' || x == 'd' || x == 's' || x == 'c' || x == 'i')
 		return (sel_op2(x, args, numw));
 	if (x == 'p')
-		numw = sel_pointer((va_arg(args, void *)));
+		numw = sel_pointer((va_arg(args, unsigned long)));
 	if (x == 'x')
 	{
-		hex = va_arg(args, long);
-		res = ft_strtolower(ft_convert_base(ft_ltoa(hex), BASE10, BASE16));
+		hex = va_arg(args, unsigned int);
+		res = ft_strtolower(ft_putlong_base(hex, BASE16));
 		numw = ft_intputstr_fd(res, 1);
 		free(res);
 	}
 	if (x == 'X')
 	{
-		hex = va_arg(args, long);
-		res = ft_strtoupper(ft_convert_base(ft_ltoa(hex), BASE10, BASE16));
+		hex = va_arg(args, unsigned int);
+		res = ft_strtoupper(ft_putlong_base(hex, BASE16));
 		numw = ft_intputstr_fd(res, 1);
 		free(res);
 	}
@@ -109,42 +109,4 @@ int	ft_printf(char const *s, ...)
 	}
 	va_end(args);
 	return (numw);
-}
-
-
-int main()
-{
-	int a = 0;
-	int b = 0;
-	char character = 'a';
-    int number = 18;
-    char *string = "cadena de texto";
-    void *pointer = &number; // dirección de memoria de 'number'
-    unsigned int hex_lower = 255; // valor para %x
-    unsigned int hex_upper = 255; // valor para %X
-    int signed_int = -42; // valor para %i
-    unsigned int unsigned_int = 42; // valor para %u
-
-    a = ft_printf("hola que tal %c %d %s %p %x %X %i %u %%\n",
-                      character,
-                      number,
-                      string,
-                      pointer,
-                      hex_lower,
-                      hex_upper,
-                      signed_int,
-                      unsigned_int);
-
-	b = printf("hola que tal %c %d %s %p %x %X %i %u %%\n",
-                      character,
-                      number,
-                      string,
-                      pointer,
-                      hex_lower,
-                      hex_upper,
-                      signed_int,
-                      unsigned_int);
-	printf("1 %d\n", a);
-	printf("2 %d\n", b);
-	return (0);
 }
